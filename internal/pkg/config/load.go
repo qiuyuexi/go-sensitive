@@ -21,10 +21,10 @@ func SetWorkPath() {
 //文件中读取配置
 func LoadSensitiveWords() map[int][]string {
 	words := make(map[int][]string)
-	inputReader,err := ioutil.ReadFile(appPath + "/env/words/words.json")
-	if err!= nil{
-
+	inputReader, err := ioutil.ReadFile(appPath + "/env/words/words.json")
+	if err != nil {
+		return words
 	}
-	json.Unmarshal(inputReader,&words)
+	json.Unmarshal(inputReader, &words)
 	return words
 }

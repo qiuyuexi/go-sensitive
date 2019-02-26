@@ -21,12 +21,11 @@ func Start() {
 生成ac自动机字典
  */
 func buildAhocorasickDict() {
-	config := config.LoadSensitiveWords()
+	sensitiveWordConfig := config.LoadSensitiveWords()
 	AcDictIns = new(acDict)
 	AcDictIns.isUpdate = 0
 	AcDictIns.ac[0] = ahocorasick.GetAhocorasick()
-
-	for k, v := range config {
+	for k, v := range sensitiveWordConfig {
 		AcDictIns.ac[0].Tree[k] = ahocorasick.GetTire(v)
 	}
 	AcDictIns.ac[1] = AcDictIns.ac[0]
@@ -36,8 +35,11 @@ func buildAhocorasickDict() {
 获取ac自动机
  */
 func GetAcDictIns() *ahocorasick.Ahocorasick {
+	var acIns *ahocorasick.Ahocorasick
 	if AcDictIns.isUpdate == 0 {
-		return AcDictIns.ac[0]
+		acIns = AcDictIns.ac[0]
+	} else {
+		acIns = AcDictIns.ac[1]
 	}
-	return AcDictIns.ac[1]
+	return acIns
 }

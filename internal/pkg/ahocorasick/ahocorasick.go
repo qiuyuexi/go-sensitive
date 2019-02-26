@@ -2,6 +2,9 @@ package ahocorasick
 
 import "fmt"
 
+/**
+ac自动机节点
+ */
 type trieNode struct {
 	value     string
 	endString string
@@ -31,11 +34,14 @@ func (trieTree *trieNode) insert(value string) {
 	node.endString = value
 }
 
-func (root *trieNode) Search(value string) []string {
+func (root *trieNode) Search(value string) (hitString []string) {
 	str := []rune(value)
 	node := root
-	hitString := []string{}
+	hitString = []string{}
 	hit := 0
+	defer func() {
+		hitString = []string{}
+	}()
 	for _, v := range str {
 
 		index := string(v)
@@ -43,10 +49,10 @@ func (root *trieNode) Search(value string) []string {
 		//如果不存在，则一直回溯fial，直到回到root
 		for {
 			_, ok := node.next[index];
-			if  !ok && node != root {
+			if !ok && node != root {
 				node = node.fail
 			}
-			if ok || node == root{
+			if ok || node == root {
 				break
 			}
 
@@ -60,15 +66,12 @@ func (root *trieNode) Search(value string) []string {
 		curNode := node
 		for curNode != nil && curNode != root {
 			if curNode.endString != "" {
-				fmt.Println(curNode.endString)
 				hitString = append(hitString, curNode.endString)
-				fmt.Println(hitString)
 				hit++
 			}
 			curNode = curNode.fail
 		}
 	}
-	fmt.Println(hit)
 	return hitString
 }
 
@@ -146,9 +149,12 @@ func GetAhocorasick() *Ahocorasick {
 	return ahocorasick
 }
 
-func GetTire(words []string) *trieNode {
+/**
+获取ac自动机，
+ */
+func GetTire(words []string) (root *trieNode) {
 
-	root := new(trieNode)
+	root = new(trieNode)
 	root.fail = nil
 	root.endString = ""
 	root.value = ""
