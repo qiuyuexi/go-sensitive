@@ -40,7 +40,10 @@ func (root *trieNode) Search(value string) (hitString []string) {
 	hitString = []string{}
 	hit := 0
 	defer func() {
-		hitString = []string{}
+		if err := recover(); err != nil {
+			fmt.Println(err)
+			hitString = []string{}
+		}
 	}()
 	for _, v := range str {
 
@@ -72,6 +75,7 @@ func (root *trieNode) Search(value string) (hitString []string) {
 			curNode = curNode.fail
 		}
 	}
+	fmt.Println(value, hitString);
 	return hitString
 }
 
