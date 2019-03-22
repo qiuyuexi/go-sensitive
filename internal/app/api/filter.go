@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"fmt"
+	"go-sensitive/internal/pkg/ahocorasick"
 	"go-sensitive/internal/pkg/server"
 	"net/http"
 	"strconv"
@@ -52,7 +53,7 @@ func FilterHandel(w http.ResponseWriter, req *http.Request) {
 	treeNumList := strings.Split(treeNum, ",")
 
 	//获取ac自动机
-	Ac := server.GetAcDictIns()
+	Ac := ahocorasick.GetAcDictIns()
 	result := make(map[int][]string)
 	for _, v := range treeNumList {
 		index, _ := strconv.Atoi(v)
