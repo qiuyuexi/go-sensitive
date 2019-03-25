@@ -1,13 +1,24 @@
 package main
 
 import (
-	"go-sensitive/internal/app/api"
+	"flag"
 	"go-sensitive/internal/pkg/server"
-	"net/http"
+	"os"
+	"path/filepath"
 )
 
+var port int
+var configPath string
+
 func main() {
-	server.Start()
-	http.HandleFunc("/filter",api.FilterHandel);
-	http.ListenAndServe(":8081",nil)
+
+	flagParse()
+	server.Start(port, configPath)
+}
+func flagParse() {
+	defaultConfigPath, _ := os.Getwd()
+	defaultConfigPath = filepath.Dir(defaultConfigPath)
+	flag.IntVar(&port, "port", 8081, "listen port")
+	flag.StringVar(&configPath, "config", defaultConfigPath, "config dir path")
+	flag.Parse()
 }

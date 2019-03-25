@@ -1,4 +1,4 @@
-package server
+package template
 
 import "testing"
 
@@ -18,3 +18,4 @@ func TestServerSuccess(t *testing.T) {
 		t.Errorf("code:%v,msg:%v,body:%v", res.Head.Code, res.Head.Msg, res.Body.Data)
 	}
 }
+

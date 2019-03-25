@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"go-sensitive/internal/pkg/ahocorasick"
-	"go-sensitive/internal/pkg/server"
+	"go-sensitive/internal/pkg/template"
 	"net/http"
 	"strconv"
 	"strings"
@@ -25,8 +25,7 @@ func FilterHandel(w http.ResponseWriter, req *http.Request) {
 	}
 
 	if _, ok := req.PostForm["content"]; !ok {
-		result := server.ServerErr(400, "content 不能为空")
-		fmt.Println(result)
+		result := template.ServerErr(400, "content 不能为空")
 		res, _ := json.Marshal(result)
 		_, err := w.Write(res)
 		if err != nil {
@@ -36,10 +35,9 @@ func FilterHandel(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if _, ok := req.PostForm["tree_num"]; !ok {
-		result := server.ServerErr(400, "tree_num 不能为空")
+	if _, ok := req.PostForm["group_id"]; !ok {
+		result := template.ServerErr(400, "group_id 不能为空")
 		res, _ := json.Marshal(result)
-		fmt.Println(res)
 		_, err := w.Write([]byte(res))
 		if err != nil {
 			fmt.Println("error")
@@ -49,23 +47,23 @@ func FilterHandel(w http.ResponseWriter, req *http.Request) {
 	}
 
 	content := req.PostForm["content"][0]
-	treeNum := req.PostForm["tree_num"][0]
-	treeNumList := strings.Split(treeNum, ",")
+	groupId := req.PostForm["group_id"][0]
+	groupIdList := strings.Split(groupId, ",")
 
 	//获取ac自动机
 	Ac := ahocorasick.GetAcDictIns()
 	result := make(map[int][]string)
-	for _, v := range treeNumList {
+	for _, v := range groupIdList {
 		index, _ := strconv.Atoi(v)
 		if Ac.Tree[index] != nil {
 			result[index] = Ac.Tree[index].Search(content)
 		}
 	}
-	resSuccess := server.ServerSuccess(result)
+	resSuccess := template.ServerSuccess(result)
 	res, _ := json.Marshal(resSuccess)
 	_, err := w.Write(res)
 	if err != nil {
-		fmt.Println("error")
+		fmt.Println(err)
 		w.WriteHeader(500)
 	}
 	return

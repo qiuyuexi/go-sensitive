@@ -9,7 +9,7 @@ import (
 	"context"
 )
 
-func Watch() {
+func wordsWatch() {
 
 	go func() {
 		cli, err := clientv3.New(clientv3.Config{

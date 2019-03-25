@@ -17,6 +17,11 @@
 			"revisionTime": "2019-03-20T17:03:52Z"
 		},
 		{
+			"checksumSHA1": "kxzfnN+IPF0sViI9iiUnI7aZVWM=",
+			"path": "github.com/go-sql-driver/mysql",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "OtzpcS4kb0PT8nj2Lj3nolXn3Bw=",
 			"origin": "go.etcd.io/etcd/vendor/github.com/gogo/protobuf/gogoproto",
 			"path": "github.com/gogo/protobuf/gogoproto",
@@ -296,6 +301,11 @@
 			"path": "golang.org/x/text/unicode/norm",
 			"revision": "122744c660ae5df9f3e38f03f99c1bc373ffeebc",
 			"revisionTime": "2019-03-20T17:03:52Z"
+		},
+		{
+			"checksumSHA1": "LiyXfqOzaeQ8vgYZH3t2hUEdVTw=",
+			"path": "google.golang.org/appengine/cloudsql",
+			"revision": ""
 		},
 		{
 			"checksumSHA1": "AubR8T/clx04wAEJlXwpwxI4uTM=",

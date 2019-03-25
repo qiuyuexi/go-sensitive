@@ -1,12 +1,15 @@
 package ahocorasick
 
-import "go-sensitive/internal/pkg/config"
+import (
+	"go-sensitive/internal/pkg/config"
+)
 
 var AcDictIns *acDict
 
 type acDict struct {
 	isUpdate int
 	ac       [2]*Ahocorasick
+	isBuild  int
 }
 
 /**
@@ -15,12 +18,13 @@ type acDict struct {
 func BuildAhocorasickDict() {
 	sensitiveWordConfig := config.LoadSensitiveWords()
 	AcDictIns = new(acDict)
-	AcDictIns.isUpdate = 0
 	AcDictIns.ac[0] = GetAhocorasick()
 	for k, v := range sensitiveWordConfig {
 		AcDictIns.ac[0].Tree[k] = GetTire(v)
 	}
 	AcDictIns.ac[1] = AcDictIns.ac[0]
+	AcDictIns.isBuild = 1
+	AcDictIns.isUpdate = 0
 }
 
 /**
@@ -37,8 +41,8 @@ func RebuildAhocorasickDict() {
 	}
 	newAcDictIns.ac[1] = newAcDictIns.ac[0]
 	AcDictIns.ac[0] = newAcDictIns.ac[0]
-	AcDictIns.isUpdate = 0
 	AcDictIns.ac[1] = newAcDictIns.ac[1]
+	AcDictIns.isUpdate = 0
 }
 
 /**
@@ -46,6 +50,12 @@ func RebuildAhocorasickDict() {
  */
 func GetAcDictIns() *Ahocorasick {
 	var acIns *Ahocorasick
+
+	//需要判断是否构建
+	if AcDictIns == nil {
+		BuildAhocorasickDict()
+	}
+
 	if AcDictIns.isUpdate == 0 {
 		acIns = AcDictIns.ac[0]
 	} else {

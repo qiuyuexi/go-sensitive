@@ -1,6 +1,8 @@
 package ahocorasick
 
-import "fmt"
+import (
+	"fmt"
+)
 
 /**
 ac自动机节点
@@ -75,7 +77,7 @@ func (root *trieNode) Search(value string) (hitString []string) {
 			curNode = curNode.fail
 		}
 	}
-	fmt.Println(value, hitString);
+	fmt.Println("查询:"+value, "命中:", hitString);
 	return hitString
 }
 
